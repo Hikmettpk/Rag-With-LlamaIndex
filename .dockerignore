@@ -1,0 +1,9 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+.rag-env311/
+.git
+.gitignore

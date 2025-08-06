@@ -1,2 +1,32 @@
-.rag-env311
+# Environment variables
 .env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.rag-env311/
+env/
+venv/
+.env/
+.venv/
+
+# Data files
+data/pdfs/*
+!data/pdfs/.gitkeep
+
+# Docker
+.docker/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
