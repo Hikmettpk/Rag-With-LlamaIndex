@@ -8,11 +8,9 @@ def load_pdfs(dir_path: str) -> List[Document]:
     all_docs: List[Document] = []
     for pdf in Path(dir_path).glob("*.pdf"):
         docs = reader.load_data(pdf)
-        # ✅ metadata sağlamlaştırma
         for d in docs:
             md = d.metadata or {}
             md.setdefault("file_name", pdf.name)
-            # bazı sürümlerde "page_label" gelmeyebilir; "page" varsa onu kullan
             if "page_label" not in md and "page" in md:
                 md["page_label"] = str(md["page"])
             d.metadata = md
