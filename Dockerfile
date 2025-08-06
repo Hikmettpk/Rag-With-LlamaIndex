@@ -33,9 +33,6 @@ RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /app
 USER appuser
 
-# Add a health check script
-COPY --chown=appuser:appuser healthcheck.sh .
-RUN chmod +x healthcheck.sh
 
 # Command to run the application
-CMD ["python", "-m", "src.query.ask"]
+CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

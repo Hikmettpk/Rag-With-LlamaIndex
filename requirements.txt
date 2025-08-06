@@ -19,3 +19,8 @@ pymupdf>=1.26.1,<1.27
 psycopg2-binary>=2.9,<3
 python-dotenv>=1.0,<2
 pandas>=2.2,<3
+
+#API
+fastapi>=0.104.0
+uvicorn>=0.24.0
+python-multipart>=0.0.7
