@@ -1,0 +1,21 @@
+# Araçlar
+pip>=25.2
+setuptools>=80
+wheel>=0.45
+
+# LlamaIndex çekirdek + entegrasyonlar (hepsi core 0.13 ile uyumlu)
+llama-index==0.13.0
+llama-index-readers-file>=0.5,<0.6
+llama-index-vector-stores-postgres==0.6.1
+llama-index-embeddings-huggingface>=0.6,<0.7   # ← ÖNEMLİ: 0.6.x
+
+# Embedding & rerank
+sentence-transformers>=2.7,<3.5
+
+# PDF
+pymupdf>=1.26.1,<1.27
+
+# DB ve yardımcılar
+psycopg2-binary>=2.9,<3
+python-dotenv>=1.0,<2
+pandas>=2.2,<3
