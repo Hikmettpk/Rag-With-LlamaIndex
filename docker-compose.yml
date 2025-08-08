@@ -2,13 +2,20 @@ services:
   app:
     build: .
     environment:
-      - PGHOST=host.docker.internal  
+      - PGHOST=host.docker.internal
       - PGPORT=5432
       - PGDATABASE=rag_fin
       - PGUSER=postgres
       - PGPASSWORD=postgres
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - "8000:8000" # FastAPI port
     volumes:
       - ./data:/app/data
     extra_hosts:
-      - "host.docker.internal:host-gateway" 
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3

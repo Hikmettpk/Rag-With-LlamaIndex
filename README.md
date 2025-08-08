@@ -9,13 +9,6 @@ This project implements a Retrieval-Augmented Generation (RAG) system for analyz
 - Natural language querying of financial documents
 - Docker support for easy deployment
 
-## Prerequisites
-
-- Python 3.11+
-- PostgreSQL 16+ with pgvector extension
-- OpenAI API key
-- Docker and Docker Compose (optional)
-
 ## Installation
 
 ### Local Setup
@@ -29,7 +22,8 @@ cd rag-finreports
 2. Create and activate a virtual environment:
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+source .venv/bin/activate  
+# On Windows: .venv\Scripts\activate
 ```
 
 3. Install dependencies:
