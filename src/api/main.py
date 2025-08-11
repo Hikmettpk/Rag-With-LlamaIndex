@@ -54,6 +54,7 @@ async def health():
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
+    
     """Global exception handler"""
     logger.error(f"Global exception: {str(exc)}")
     return JSONResponse(
@@ -63,3 +64,6 @@ async def global_exception_handler(request: Request, exc: Exception):
             "timestamp": datetime.now().isoformat()
         }
     )
+
+
+app.state.timeout = 300 

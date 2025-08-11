@@ -28,7 +28,7 @@ export function QuestionForm({
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
                         <Input
                             type="text"
-                            placeholder="Ask about revenue, expenses, growth metrics, or any financial data..."
+                            placeholder="Verilere soru sor"
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}
                             className="pl-10 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-blue-500"

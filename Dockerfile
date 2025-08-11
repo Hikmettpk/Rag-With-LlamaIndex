@@ -21,8 +21,11 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the project files
+# AI-generated: Model'i build aşamasında indir
 COPY src/ ./src/
+RUN python -c "from src.embed import get_embedding_model; model = get_embedding_model()"
+
+# Copy the project files
 COPY data/ ./data/
 
 # Set Python path
