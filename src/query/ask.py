@@ -39,6 +39,5 @@ Alınan Temettüler 2020'de 492 milyon TL, 2021'de 1.562 milyon TL, 2022'de 2.11
 - score=0.682 file=sabanci.pdf page=?
 
 
-Backend run kodu 
-PYTHONPATH=$PWD uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+
 """
