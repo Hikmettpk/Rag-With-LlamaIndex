@@ -67,3 +67,5 @@ python -m src.query.ask "Your question here"
 Backend run kodu 
 PYTHONPATH=$PWD uvicorn src.api.main:app --host 0.0.0.0 --port 8000
 
+#evaluation
+

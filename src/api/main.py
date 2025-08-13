@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from .routers.queries import router as queries_router  # Değişiklik burada
+from .routers.queries import router as queries_router
+from .routers.uploads import router as uploads_router
 import logging
 from datetime import datetime
 
@@ -35,6 +36,11 @@ app.include_router(
     prefix="/api/v1"
 )
 
+app.include_router(
+    uploads_router,
+    prefix="/api/v1"
+)
+
 @app.get("/")
 async def root():
     """Root endpoint"""
@@ -51,6 +57,8 @@ async def health():
         "status": "healthy",
         "timestamp": datetime.now().isoformat()
     }
+
+
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):

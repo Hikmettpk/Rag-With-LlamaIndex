@@ -20,4 +20,5 @@ class Settings:
     # ↓↓↓ YENİ TABLO VE BOYUT ↓↓↓
     table_name: str = "fin_reports_idx_bge"
     embed_dim: int = 1024  # BGE-M3 boyutu
+    uploads_table_name: str = os.getenv("UPLOADS_TABLE_NAME", "user_uploads_idx_bge")
 settings = Settings()

@@ -37,7 +37,4 @@ Alınan Temettüler 2020'de 492 milyon TL, 2021'de 1.562 milyon TL, 2022'de 2.11
 - score=0.688 file=sabanci.pdf page=?
 - score=0.687 file=sabanci.pdf page=?
 - score=0.682 file=sabanci.pdf page=?
-
-
-
 """
