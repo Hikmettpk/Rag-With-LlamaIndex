@@ -17,7 +17,7 @@ def main(q: str):
         print(f"- score={sc_txt} file={fn} page={pg}")
 
 if __name__ == "__main__":
-    question = " ".join(sys.argv[1:]) or "Sabancı Holdingte Alınan Temettüler kaç TL'dir"
+    question = " ".join(sys.argv[1:]) or "TürkTraktör şirketinin ortaklık yapısı nasıldır?"
     main(question)
 #RUN KODU
 """
@@ -37,4 +37,7 @@ Alınan Temettüler 2020'de 492 milyon TL, 2021'de 1.562 milyon TL, 2022'de 2.11
 - score=0.688 file=sabanci.pdf page=?
 - score=0.687 file=sabanci.pdf page=?
 - score=0.682 file=sabanci.pdf page=?
+
+
+
 """

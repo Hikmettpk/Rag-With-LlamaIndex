@@ -9,9 +9,10 @@ services:
       - PGPASSWORD=postgres
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     ports:
-      - "8000:8000" # FastAPI port
+      - "8000:8000"
     volumes:
       - ./data:/app/data
+      - model_cache:/root/.cache/huggingface
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -19,3 +20,5 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+volumes:
+  model_cache:
