@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { QuestionForm } from "../components/question-form";
 import { StreamingAnswer } from "../components/streaming-answer";
 import { SourcesList } from "../components/sources-list";
@@ -15,6 +15,13 @@ type Source = {
   metadata?: Record<string, unknown>;
 };
 
+// AI-generated: Çoklu upload grubu yapısı
+type UploadGroup = {
+  id: string;
+  files: string[];
+  createdAt: string;
+};
+
 export default function Page() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -22,13 +29,42 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const controllerRef = useRef<AbortController | null>(null);
 
-  // AI-generated: my-doc states
+  // AI-generated: Upload UI state'leri
   const [showUploader, setShowUploader] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [uploadGroupId, setUploadGroupId] = useState<string | null>(null);
-  const [myQuestion, setMyQuestion] = useState("");
+
+  // AI-generated: Birden fazla upload grubu + aktif seçim + localStorage persist
+  const [uploadGroups, setUploadGroups] = useState<UploadGroup[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const raw = localStorage.getItem("uploadGroups");
+      return raw ? (JSON.parse(raw) as UploadGroup[]) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [activeGroupId, setActiveGroupId] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = localStorage.getItem("uploadGroups");
+      const arr: UploadGroup[] = raw ? JSON.parse(raw) : [];
+      return arr[0]?.id ?? null;
+    } catch {
+      return null;
+    }
+  });
+
+  // AI-generated: Persist ve aktif grup bakımı
+  useEffect(() => {
+    try {
+      localStorage.setItem("uploadGroups", JSON.stringify(uploadGroups));
+    } catch { }
+    if (!activeGroupId && uploadGroups.length > 0) {
+      setActiveGroupId(uploadGroups[0].id);
+    }
+  }, [uploadGroups]);
 
   async function onAsk(e: React.FormEvent) {
     e.preventDefault();
@@ -102,7 +138,7 @@ export default function Page() {
     setLoading(false);
   }
 
-  // AI-generated: upload confirm
+  // AI-generated: upload confirm -> uploadGroups listesine ekle ve aktif yap
   async function onUploadConfirm() {
     if (!selectedFile) return;
     setUploading(true);
@@ -114,7 +150,17 @@ export default function Page() {
         throw new Error(await resp.text());
       }
       const data = await resp.json();
-      setUploadGroupId(data.upload_group_id);
+      const newGroup: UploadGroup = {
+        id: data.upload_group_id,
+        files: Array.isArray(data.files) ? data.files : [],
+        createdAt: new Date().toISOString(),
+      };
+
+      setUploadGroups((prev) => {
+        const deduped = prev.filter((g) => g.id !== newGroup.id);
+        return [newGroup, ...deduped];
+      });
+      setActiveGroupId(newGroup.id); // En son yüklenen aktif olsun
       setShowUploader(false);
     } catch (e: any) {
       alert(e?.message || "Upload failed");
@@ -124,9 +170,10 @@ export default function Page() {
     }
   }
 
+  // AI-generated: Seçili upload grubu için soru sor
   async function onAskMyDoc(e: React.FormEvent) {
     e.preventDefault();
-    if (!myQuestion.trim() || !uploadGroupId) return;
+    if (!myQuestion.trim() || !activeGroupId) return;
 
     setAnswer("");
     setSources([]);
@@ -140,7 +187,7 @@ export default function Page() {
       const resp = await fetch("/api/ask-upload-stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: myQuestion, max_results: 5, upload_group_id: uploadGroupId }),
+        body: JSON.stringify({ question: myQuestion, max_results: 5, upload_group_id: activeGroupId }),
         signal: ctrl.signal,
       });
 
@@ -190,6 +237,9 @@ export default function Page() {
       setLoading(false);
     }
   }
+
+  // AI-generated: Kendi belge formu state'i
+  const [myQuestion, setMyQuestion] = useState("");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30">
@@ -247,11 +297,42 @@ export default function Page() {
           </div>
         )}
 
+        {/* AI-generated: Aktif upload grubunu seçme */}
+        {uploadGroups.length > 0 && (
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-sm text-slate-600">Aktif belge:</span>
+            <select
+              className="border rounded px-2 py-1 text-sm"
+              value={activeGroupId ?? ""}
+              onChange={(e) => setActiveGroupId(e.target.value || null)}
+            >
+              {uploadGroups.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {(g.files && g.files[0]) || g.id.slice(0, 8)}
+                </option>
+              ))}
+            </select>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                if (!activeGroupId) return;
+                setUploadGroups((prev) => prev.filter((g) => g.id !== activeGroupId));
+                setActiveGroupId((prevId) => {
+                  const rest = uploadGroups.filter((g) => g.id !== (prevId || ""));
+                  return rest[0]?.id || null;
+                });
+              }}
+            >
+              Kaldır
+            </Button>
+          </div>
+        )}
+
         {/* Global veriler için form (mevcut) */}
         <QuestionForm question={question} setQuestion={setQuestion} onAsk={onAsk} onCancel={onCancel} loading={loading} />
 
-        {/* AI-generated: Yüklenen belgeye özel form (upload sonrası görünür) */}
-        {uploadGroupId && (
+        {/* AI-generated: Yüklenen belgeye özel form (aktif grup varsa görünür) */}
+        {activeGroupId && (
           <MyDocForm question={myQuestion} setQuestion={setMyQuestion} onAsk={onAskMyDoc} onCancel={onCancel} loading={loading} />
         )}
 
