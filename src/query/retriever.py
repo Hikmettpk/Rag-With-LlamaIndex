@@ -16,7 +16,6 @@ def get_query_engine():
     
     _logger.info("Initializing query engine with BGE-M3 model and Azure OpenAI...")
 
-    # Azure OpenAI LLM yapılandırması
     llm = AzureOpenAI(
         engine=settings.azure_deployment,
         api_key=settings.azure_api_key,

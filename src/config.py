@@ -18,6 +18,6 @@ class Settings:
     azure_api_version: str = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")
 
     # ↓↓↓ YENİ TABLO VE BOYUT ↓↓↓
-    table_name: str = "fin_reports_idx_bge"
+    table_name: str = "fin_reports_idx_bge_new"
     embed_dim: int = 1024  # BGE-M3 boyutu
 settings = Settings()

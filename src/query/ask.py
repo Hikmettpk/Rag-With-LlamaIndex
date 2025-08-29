@@ -17,7 +17,7 @@ def main(q: str):
         print(f"- score={sc_txt} file={fn} page={pg}")
 
 if __name__ == "__main__":
-    question = " ".join(sys.argv[1:]) or "TürkTraktör şirketinin ortaklık yapısı nasıldır?"
+    question = " ".join(sys.argv[1:]) or "n-Octane  surface tension kaç dyne/cm "
     main(question)
 #RUN KODU
 """
